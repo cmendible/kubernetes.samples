@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dni-function
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dni-function
+    spec:
+      containers:
+      - name: dni-function
+        image: cmendibl3/dni:1.0.0
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dni-function
+spec:
+  type: ClusterIP
+  ports:
+  - name:
+    port: 80
+  selector:
+    app: dni-function

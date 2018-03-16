@@ -1,0 +1,1 @@
+kubectl apply -f ./ingress_rules.yaml
