@@ -1,0 +1,107 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+  creationTimestamp: 2018-03-29T08:26:48Z
+  generation: 2
+  labels:
+    addonmanager.kubernetes.io/mode: EnsureExists
+    k8s-app: heapster
+    kubernetes.io/cluster-service: "true"
+  name: heapster
+  namespace: kube-system
+  resourceVersion: "486"
+  selfLink: /apis/extensions/v1beta1/namespaces/kube-system/deployments/heapster
+  uid: ec76f8ab-332a-11e8-b26a-0a58ac1f03e4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: heapster
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ""
+      creationTimestamp: null
+      labels:
+        k8s-app: heapster
+    spec:
+      containers:
+      - command:
+        - /heapster
+        - --source=kubernetes.summary_api:""
+        - --sink=influxdb:http://monitoring-influxdb.kube-system.svc:8086
+        image: k8s-gcrio.azureedge.net/heapster-amd64:v1.4.2
+        imagePullPolicy: IfNotPresent
+        name: heapster
+        resources:
+          limits:
+            cpu: 88m
+            memory: 204Mi
+          requests:
+            cpu: 88m
+            memory: 204Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - command:
+        - /pod_nanny
+        - --cpu=80m
+        - --extra-cpu=0.5m
+        - --memory=140Mi
+        - --extra-memory=4Mi
+        - --threshold=5
+        - --deployment=heapster
+        - --container=heapster
+        - --poll-period=300000
+        - --estimator=exponential
+        env:
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: MY_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: k8s-gcrio.azureedge.net/addon-resizer:1.7
+        imagePullPolicy: IfNotPresent
+        name: heapster-nanny
+        resources:
+          limits:
+            cpu: 50m
+            memory: 90Mi
+          requests:
+            cpu: 50m
+            memory: 90Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: heapster
+      serviceAccountName: heapster
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: 2018-03-29T08:26:48Z
+    lastUpdateTime: 2018-03-29T08:26:48Z
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
