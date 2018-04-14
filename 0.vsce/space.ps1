@@ -1,2 +1,1 @@
-vsce up -d
-vsce space create --name azbootcamp
+vsce space create --name carlos

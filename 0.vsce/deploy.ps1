@@ -1,2 +1,2 @@
-vsce env create --name k8sbootcampbcn --location westeurope
+vsce env create --name k8sbcn --location westeurope
 vsce list
