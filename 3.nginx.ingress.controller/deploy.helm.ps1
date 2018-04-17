@@ -1,0 +1,1 @@
+helm install stable/nginx-ingress --name my-nginx --set controller.ingressClass=nginx
