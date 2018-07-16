@@ -1,0 +1,9 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dni-function-deny-all
+spec:
+  podSelector:
+    matchLabels:
+      app: dni-function
+  ingress: []
