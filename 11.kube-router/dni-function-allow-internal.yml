@@ -1,0 +1,13 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dni-function-allow-internal
+spec:
+  podSelector:
+    matchLabels:
+      app: dni-function
+  ingress:
+  - from:
+      - podSelector:
+          matchLabels:
+            app: internal
