@@ -1,0 +1,4 @@
+1. Run:
+kubectl proxy
+2. Navigate to Kibana:
+http://127.0.0.1:8001/api/v1/namespaces/{{ .Values.namespace }}/services/kibana-logging/proxy/app/kibana

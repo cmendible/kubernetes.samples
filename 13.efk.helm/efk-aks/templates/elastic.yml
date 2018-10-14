@@ -1,0 +1,90 @@
+---
+# Create the elasticsearch-logging service
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-logging
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: elasticsearch-logging
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Elasticsearch"
+    chart: {{ include "efk-aks.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+  - port: 9200
+    protocol: TCP
+    targetPort: db
+  selector:
+    k8s-app: elasticsearch-logging
+
+---
+# Deploy Elasticsearch
+# Please  note that minum set of replicas and MINIMUM_MASTER_NODES are sett to 1.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch-logging
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: elasticsearch-logging
+    version: {{ .Values.elastic.version }}
+    kubernetes.io/cluster-service: "true"
+    chart: {{ include "efk-aks.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: elasticsearch-logging
+  replicas: {{ .Values.elastic.replicaCount }}
+  selector:
+    matchLabels:
+      k8s-app: elasticsearch-logging
+      version: {{ .Values.elastic.version }}
+  template:
+    metadata:
+      labels:
+        k8s-app: elasticsearch-logging
+        version: {{ .Values.elastic.version }}
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+      - image: k8s.gcr.io/elasticsearch:{{ .Values.elastic.version }}
+        name: elasticsearch-logging
+        resources:
+          # need more cpu upon initialization, therefore burstable class
+          limits:
+            cpu: 1000m
+          requests:
+            cpu: 100m
+        ports:
+        - containerPort: 9200
+          name: db
+          protocol: TCP
+        - containerPort: 9300
+          name: transport
+          protocol: TCP
+        volumeMounts:
+        - name: elasticsearch-logging
+          mountPath: /data
+        env:
+        - name: "NAMESPACE"
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: "MINIMUM_MASTER_NODES"
+          value: "{{ .Values.elastic.MINIMUM_MASTER_NODES }}"
+      volumes:
+        - name: elasticsearch-logging
+          persistentVolumeClaim:
+            claimName: elasticsearch-logging-managed-disk
+      # Elasticsearch requires vm.max_map_count to be at least 262144.
+      # If your OS already sets up this number to a higher value, feel free
+      # to remove this init container.
+      initContainers:
+      - image: alpine:3.6
+        command: ["/sbin/sysctl", "-w", "vm.max_map_count=262144"]
+        name: elasticsearch-logging-init
+        securityContext:
+          privileged: true

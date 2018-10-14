@@ -1,0 +1,10 @@
+--- 
+# Create the elastic namespace 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.namespace }}
+  labels:
+    chart: {{ include "efk-aks.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
