@@ -1,0 +1,14 @@
+
+published : true
+
+theme : night
+
+footnote : "Carlos Mendible | @cmendibl3"
+
+layout : top-left
+
+transition : none
+
+title : "Simple Introduction to Kubernetes"
+description : "Simple Introduction to Kubernetes"
+thumbnail : https://gitpitch.com/gpimg/the-template-thumb.jpg
