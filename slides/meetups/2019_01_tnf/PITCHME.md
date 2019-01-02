@@ -73,6 +73,8 @@
 
 * kubectl
 * Helm
+* Draft
+* Azure Dev Spaces
 
 ---?color=#e7ad52
 
