@@ -60,6 +60,14 @@
 
 ### Other Concepts
 
+* Ingress
+* Deployments
+* Jobs
+* Autoscaling
+* DaemonSets
+* StatefulSets
+
+Note:
 * **Ingress:** Load balancing (L7)
 * **Deployments:**  Declarative version updates
 * **Jobs:** Run to completion
@@ -70,6 +78,14 @@
 ---
 
 ### Interacting with Kubernetes
+
+* kubectl
+* helm
+* draft
+* Azure Dev Spaces
+* Visual Studio Code
+
+Note:
 
 * **kubectl:** k8s cli
 * **helm:** define, install, and upgrade even the most complex k8s application
