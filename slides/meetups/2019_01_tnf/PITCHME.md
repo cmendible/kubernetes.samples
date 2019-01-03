@@ -60,7 +60,7 @@
 
 ### Other Concepts
 
-* **Ingres**s:** Load balancing (L7)
+* **Ingress:** Load balancing (L7)
 * **Deployments:**  Declarative version updates
 * **Jobs:** Run to completion
 * **Autoscaling:** Automatically adjust replica count
