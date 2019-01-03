@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "temperature-azds.fullname" . }}
+  labels:
+    app: {{ template "temperature-azds.name" . }}
+    chart: {{ template "temperature-azds.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "temperature-azds.name" . }}
+    release: {{ .Release.Name }}

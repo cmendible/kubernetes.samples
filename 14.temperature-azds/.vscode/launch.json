@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": ".NET Core Launch (AZDS)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "azds: prelaunch",
+            "pipeTransport": {
+                "pipeCwd": "${workspaceFolder}",
+                "pipeProgram": "azds",
+                "pipeArgs": [
+                    "exec",
+                    "--interactive",
+                    "--on-exit-resume-up",
+                    "--"
+                ],
+                "debuggerPath": "/vsdbg/vsdbg",
+                "quoteArgs": false
+            },
+            "cwd": "/src",
+            "program": "/src/bin/Debug/netcoreapp2.1/temperature-azds.dll",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}/."
+            }
+        }
+    ]
+}

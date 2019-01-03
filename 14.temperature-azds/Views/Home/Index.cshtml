@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-lg-8 bigChart" id="curve_chart"></div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      "use strict";
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'Date');
+        data.addColumn('number', 'Temperature');
+      
+        var options = {
+          title: 'Temperarture Readings',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          width: 900,
+          height: 500,
+          series: {
+            0: { color: '#e2431e' }
+          }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+
+        var connection = new signalR.HubConnectionBuilder().withUrl("/temperatureHub").build();
+
+        connection.on("ReceiveMessage", function (message) {
+            var reading = JSON.parse(message);
+            reading.Date = new Date(reading.Date);
+            data.addRows([[reading.Date, reading.Temperature]]);
+
+            if (data.getNumberOfRows() > 20) {
+                data.removeRow(0);
+            }
+
+            chart.draw(data, options);
+        });
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+      }
+    </script>
+}
