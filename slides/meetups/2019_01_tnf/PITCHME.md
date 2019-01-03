@@ -5,7 +5,7 @@
 @snapend
 
 @snap[midpoint]
-### An intro to Kubernetes
+### A glimpse of Kubernetes
 @snapend
 
 ---
@@ -60,21 +60,22 @@
 
 ### Other Concepts
 
-* Ingress: L7 load balancing
-* Deployments:  Declarative version updates
-* Jobs: Run to completion
-* Autoscaling: Automatically adjust replica count
-* DaemonSets: Run something on every node (or subset)
-* StatefulSets: Control over deployment order and access to volumes
+* **Ingres**s:** Load balancing (L7)
+* **Deployments:**  Declarative version updates
+* **Jobs:** Run to completion
+* **Autoscaling:** Automatically adjust replica count
+* **DaemonSets:** Run something on every node (or subset)
+* **StatefulSets:** Control over deployment order and access to volumes
 
 ---
 
 ### Interacting with Kubernetes
 
-* kubectl
-* Helm
-* Draft
-* Azure Dev Spaces
+* **kubectl:** k8s cli
+* **helm:** define, install, and upgrade even the most complex k8s application
+* **draft:** Draft targets the "inner loop" of a developer's workflow
+* **Azure Dev Spaces:** fast, iterative Kubernetes development experience for teams
+* **Visual Studio Code:** kubernetes, docker and yaml plugins
 
 ---?color=#e7ad52
 
