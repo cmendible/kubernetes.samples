@@ -93,6 +93,12 @@ Note:
 * **Azure Dev Spaces:** fast, iterative Kubernetes development experience for teams
 * **Visual Studio Code:** kubernetes, docker and yaml plugins
 
+---
+
+### Azure Dev Spaces
+
+![azds](img/collaborate-graphic.gif)
+
 ---?color=#e7ad52
 
 @snap[midpoint]
