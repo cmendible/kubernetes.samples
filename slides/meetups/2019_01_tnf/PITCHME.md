@@ -97,7 +97,7 @@ Note:
 
 ### Azure Dev Spaces
 
-![azds](img/collaborate-graphic.gif)
+![azds](slides/meetups/2019_01_tnf/img/collaborate-graphic.gif)
 
 ---?color=#e7ad52
 
