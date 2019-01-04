@@ -61,7 +61,6 @@
 ### Other Concepts
 
 * Ingress
-* Deployments
 * Jobs
 * Autoscaling
 * DaemonSets
