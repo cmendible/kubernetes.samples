@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dni-function
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - dni-function.<YOUR CLUSTERS DNS ZONE NAME>
+    secretName: tls-secret
+  rules:
+  - host: dni-function.<YOUR CLUSTERS DNS ZONE NAME>
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: dni-function
+          servicePort: 80
