@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: azure-configmap
+  labels:
+    grafana_datasource: "1"
+data:
+  datasource.yaml: |-
+    # config file version
+    apiVersion: 1  
+    datasources:
+      - name: Azure
+        type: grafana-azure-monitor-datasource
+        orgId: 1
+        typeLogoUrl: public/plugins/grafana-azure-monitor-datasource/img/logo.jpg
+        access: proxy
+        url: /api/datasources/proxy/2
+        isDefault: true
+        jsonData:
+          cloudName: azuremonitor
+          subscriptionId: 11111111-1111-1111-1111-111111111111
+          tenantId: 11111111-1111-1111-1111-111111111111
+          clientId: 11111111-1111-1111-1111-111111111111
+          logAnalyticsDefaultWorkspace: 11111111-1111-1111-1111-111111111111
+          azureLogAnalyticsSameAs: true
+          keepCookies: []
+        secureJsonData:
+          clientSecret: MySuperSecretHere
+        editable: true

@@ -1,0 +1,62 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: podid
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: podid
+        aadpodidbinding: requires-vault
+    spec:
+      serviceAccountName: podreader
+      containers:
+      - name: podid
+        image: bootcamp2019acr.azurecr.io/podid:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podid
+spec:
+  type: ClusterIP
+  ports:
+  - name:
+    port: 80
+    targetPort: 80
+  selector:
+    app: podid
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: podid
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  # tls:
+  # - hosts:
+  #   - podid.d9ca04f972f94b94bc40.westeurope.aksapp.io
+  #   secretName: tls-secret
+  rules:
+  - host: podid.d9ca04f972f94b94bc40.westeurope.aksapp.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: podid
+          servicePort: 80
