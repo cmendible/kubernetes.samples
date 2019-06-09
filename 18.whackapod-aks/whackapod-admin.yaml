@@ -1,0 +1,60 @@
+apiVersion: apps/v1beta1
+kind: Deployment        
+metadata:
+  name: whackapod-admin                      
+spec:
+  replicas: 1                                    
+  template:                        
+    metadata:                      
+      labels:                      
+        app: admin                 
+    spec:
+      serviceAccountName: podreader                     
+      containers:
+      - name: whackapod-admin
+        image: alliander/whackapod-admin
+        env:
+        - name: APIIMAGE
+          value: "alliander/whackapod-api"
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin
+spec:
+  type: ClusterIP                
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: admin
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: whackapod-admin
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: whackapod.<DNS ZONE>
+    http:
+      paths:
+      - path: /api/*
+        backend:
+          serviceName: api
+          servicePort: 8080
+      - path: /admin/*
+        backend:
+          serviceName: admin
+          servicePort: 8080
+      - path: /*
+        backend:
+          serviceName: game
+          servicePort: 8080
+    

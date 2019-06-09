@@ -1,0 +1,32 @@
+apiVersion: apps/v1beta1
+kind: Deployment        
+metadata:
+  name: whackapod-game                      
+spec:
+  replicas: 2                                    
+  template:                        
+    metadata:                      
+      labels:                      
+        app: game                 
+    spec:
+      serviceAccountName: podreader                     
+      containers:
+      - name: whackapod-game
+        image: alliander/whackapod-game
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game
+spec:
+  type: ClusterIP                
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: game
+
+    
