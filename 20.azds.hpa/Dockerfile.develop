@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["20.azds.hpa.csproj", "./"]
+RUN dotnet restore "20.azds.hpa.csproj"
+COPY . .
+RUN dotnet build --no-restore -c $BUILD_CONFIGURATION
+
+RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION -- \"\$@\"" > /entrypoint.sh
+
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]

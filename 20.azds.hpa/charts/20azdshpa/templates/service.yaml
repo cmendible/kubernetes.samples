@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "20azdshpa.fullname" . }}
+  labels:
+    app: {{ template "20azdshpa.name" . }}
+    chart: {{ template "20azdshpa.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "20azdshpa.name" . }}
+    release: {{ .Release.Name }}
